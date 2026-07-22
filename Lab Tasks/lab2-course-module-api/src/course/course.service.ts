@@ -1,26 +1,63 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 
 @Injectable()
 export class CourseService {
-  create(createCourseDto: CreateCourseDto) {
-    return 'This action adds a new course';
+  getAllCourses() {
+    return {
+      message: 'All courses ',
+      data: [],
+    };
   }
 
-  findAll() {
-    return `This action returns all course`;
+  getCourseById(id: string) {
+    return {
+      message: 'Course by id successfully',
+      id: id,
+    };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} course`;
+  createCourse(createCourseDto: CreateCourseDto) {
+    return {
+      message: 'Course created successfully',
+      data: createCourseDto,
+    };
   }
 
-  update(id: number, updateCourseDto: UpdateCourseDto) {
-    return `This action updates a #${id} course`;
+  updateCourse(id: string, updateCourseDto: UpdateCourseDto) {
+    return {
+      message: 'Course updated successfully',
+      id: id,
+      data: updateCourseDto,
+    };
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} course`;
+  patchCourse(id: string, updateCourseDto: UpdateCourseDto) {
+    return {
+      message: 'Course partially updated',
+      id: id,
+      updatedFields: Object.keys(updateCourseDto),
+    };
+  }
+
+  deleteCourse(id: string) {
+    return {
+      message: 'Course deleted successfully',
+      id: id,
+    };
+  }
+
+  uploadCourseMaterial(id: string, file: Express.Multer.File) {
+    if (!file) {
+      throw new BadRequestException('Course material file is required');
+    }
+
+    return {
+      message: 'Material uploaded successfully',
+      courseId: id,
+      filename: file.filename,
+      path: file.path,
+    };
   }
 }
